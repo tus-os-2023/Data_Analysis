@@ -58,4 +58,4 @@ if __name__ == "__main__":
     current_year = 2023
     
     convert_to_utf8(folder_path, current_year)
-    aggregate_csv_files(folder_path, 2013, 10)
+    aggregate_csv_files(folder_path, 2013, 10) 
