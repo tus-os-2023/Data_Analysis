@@ -23,7 +23,7 @@ def preprocess_data(file_name):
         col_idx = data.columns.get_loc(col)
         new_col = col
         if pd.notna(data.iat[1, col_idx]):
-            new_col += '/' + str(data.iat[i, col_idx])
+            new_col += '/' + str(data.iat[1, col_idx])
         if pd.notna(data.iat[0, col_idx]):
             new_col += '/' + str(data.iat[0, col_idx])
         new_cols.append(new_col)
