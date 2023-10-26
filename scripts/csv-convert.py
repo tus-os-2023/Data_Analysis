@@ -48,6 +48,10 @@ def aggregate_csv_files(folder_path, start_year, num_years):
             aggregated_data.append(data)
         else:
             print(f"File {file_name} does not exist!")
+            
+    target_cols = [col for col in result.columns if "現象なし情報" in col]
+    for col in target_cols:
+        result[col] = result[col].astype(bool)
 
     result = pd.concat(aggregated_data, ignore_index=True)
     result.to_csv(os.path.join(folder_path, f'Compiled_{start_year}-{start_year+num_years}.csv'), index=False, encoding='utf-8')
