@@ -49,18 +49,18 @@ def translate_column_names(data):
     ]
 
     translated_columns = [
-    "Date", "SunshineDuration", "SunshineDuration-NoPhenomenonInformation", 
-    "MaximumSnowDepth", "MaximumSnowDepth-NoPhenomenonInformation", 
+    "Date", "SunshineDuration", "SunshineDurationNoPhenomenonInformation", 
+    "MaximumSnowDepth", "MaximumSnowDepthNoPhenomenonInformation", 
     "AverageWindSpeed", "AverageVaporPressure", "AverageHumidity", 
     "AverageSeaLevelPressure", "AverageGroundLevelPressure", "AverageCloudCover", 
     "AverageTemperature", "TotalSolarRadiation", "TotalPrecipitation", 
-    "TotalPrecipitation-NoPhenomenonInformation", "TotalSnowfall", 
-    "TotalSnowfall-NoPhenomenonInformation", "MaximumTemperature", "MinimumTemperature", 
-    "MostFrequentWindDirection", "MaximumWindSpeed", "MaximumWindSpeed-WindDirection", 
-    "LowestSeaLevelPressure", "LowestSeaLevelPressure-NoPhenomenonInformation", 
+    "TotalPrecipitationNoPhenomenonInformation", "TotalSnowfall", 
+    "TotalSnowfallNoPhenomenonInformation", "MaximumTemperature", "MinimumTemperature", 
+    "MostFrequentWindDirection", "MaximumWindSpeed", "MaximumWindSpeedWindDirection", 
+    "LowestSeaLevelPressure", "LowestSeaLevelPressureNoPhenomenonInformation", 
     "MinimumRelativeHumidity", "MaximumPrecipitationin10Minutes", 
-    "MaximumPrecipitationin10Minutes-NoPhenomenonInformation", 
-    "MaximumInstantaneousWindSpeed", "MaximumInstantaneousWindSpeed-WindDirection", 
+    "MaximumPrecipitationin10MinutesNoPhenomenonInformation", 
+    "MaximumInstantaneousWindSpeed", "MaximumInstantaneousWindSpeedWindDirection", 
     "WeatherSummaryDay", "WeatherSummaryNight"
 ]
 
