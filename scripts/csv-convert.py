@@ -49,20 +49,21 @@ def translate_column_names(data):
     ]
 
     translated_columns = [
-    "Date", "SunshineDuration", "SunshineDuration/NoPhenomenonInformation", 
-    "MaximumSnowDepth", "MaximumSnowDepth/NoPhenomenonInformation", 
+    "Date", "SunshineDuration", "SunshineDuration-NoPhenomenonInformation", 
+    "MaximumSnowDepth", "MaximumSnowDepth-NoPhenomenonInformation", 
     "AverageWindSpeed", "AverageVaporPressure", "AverageHumidity", 
     "AverageSeaLevelPressure", "AverageGroundLevelPressure", "AverageCloudCover", 
     "AverageTemperature", "TotalSolarRadiation", "TotalPrecipitation", 
-    "TotalPrecipitation/NoPhenomenonInformation", "TotalSnowfall", 
-    "TotalSnowfall/NoPhenomenonInformation", "MaximumTemperature", "MinimumTemperature", 
-    "MostFrequentWindDirection", "MaximumWindSpeed", "MaximumWindSpeed/WindDirection", 
-    "LowestSeaLevelPressure", "LowestSeaLevelPressure/NoPhenomenonInformation", 
+    "TotalPrecipitation-NoPhenomenonInformation", "TotalSnowfall", 
+    "TotalSnowfall-NoPhenomenonInformation", "MaximumTemperature", "MinimumTemperature", 
+    "MostFrequentWindDirection", "MaximumWindSpeed", "MaximumWindSpeed-WindDirection", 
+    "LowestSeaLevelPressure", "LowestSeaLevelPressure-NoPhenomenonInformation", 
     "MinimumRelativeHumidity", "MaximumPrecipitationin10Minutes", 
-    "MaximumPrecipitationin10Minutes/NoPhenomenonInformation", 
-    "MaximumInstantaneousWindSpeed", "MaximumInstantaneousWindSpeed/WindDirection", 
+    "MaximumPrecipitationin10Minutes-NoPhenomenonInformation", 
+    "MaximumInstantaneousWindSpeed", "MaximumInstantaneousWindSpeed-WindDirection", 
     "WeatherSummaryDay", "WeatherSummaryNight"
 ]
+
 
     data.columns = [translated_columns[original_columns.index(col)] if col in original_columns else col for col in data.columns]
     return data
@@ -90,6 +91,9 @@ def aggregate_csv_files(folder_path, start_year, num_years):
     result = pd.concat(aggregated_data, ignore_index=True)
     result.to_csv(os.path.join(folder_path, f'Compiled_{start_year}-{start_year+num_years}_eng.csv'), index=False, encoding='utf-8')
     print(f"Data aggregated and saved as Compiled_{start_year}-{start_year+num_years}_eng.csv")
+
+    
+
 
 if __name__ == "__main__":
     folder_path = './'
