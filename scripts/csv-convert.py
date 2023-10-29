@@ -42,6 +42,38 @@ def preprocess_data(file_name):
     ])
     return data.drop([0, 1])
 
+def translate_column_names(data):
+    original_columns = [
+        "年月日", "日照時間(時間)", "日照時間(時間).1/現象なし情報", "最深積雪(cm)", 
+        "最深積雪(cm).1/現象なし情報", "平均風速(m/s)", "平均蒸気圧(hPa)", "平均湿度(％)",
+        "平均海面気圧(hPa)", "平均現地気圧(hPa)", "平均雲量(10分比)", "平均気温(℃)", 
+        "合計全天日射量(MJ/㎡)", "降水量の合計(mm)", "降水量の合計(mm).1/現象なし情報", 
+        "降雪量合計(cm)", "降雪量合計(cm).1/現象なし情報", "最高気温(℃)", "最低気温(℃)", 
+        "最多風向(16方位)", "最大風速(m/s)", "最大風速(m/s).4/風向", "最低海面気圧(hPa)", 
+        "最低海面気圧(hPa).1/現象なし情報", "最小相対湿度(％)", "10分間降水量の最大(mm)", 
+        "10分間降水量の最大(mm).1/現象なし情報", "最大瞬間風速(m/s)", "最大瞬間風速(m/s).4/風向", 
+        "天気概況(昼：06時～18時)", "天気概況(夜：18時～翌日06時)"
+    ]
+
+    translated_columns = [
+    "Date", "SunshineDuration", "SunshineDurationNoPhenomenonInformation", 
+    "MaximumSnowDepth", "MaximumSnowDepthNoPhenomenonInformation", 
+    "AverageWindSpeed", "AverageVaporPressure", "AverageHumidity", 
+    "AverageSeaLevelPressure", "AverageGroundLevelPressure", "AverageCloudCover", 
+    "AverageTemperature", "TotalSolarRadiation", "TotalPrecipitation", 
+    "TotalPrecipitationNoPhenomenonInformation", "TotalSnowfall", 
+    "TotalSnowfallNoPhenomenonInformation", "MaximumTemperature", "MinimumTemperature", 
+    "MostFrequentWindDirection", "MaximumWindSpeed", "MaximumWindSpeedWindDirection", 
+    "LowestSeaLevelPressure", "LowestSeaLevelPressureNoPhenomenonInformation", 
+    "MinimumRelativeHumidity", "MaximumPrecipitationin10Minutes", 
+    "MaximumPrecipitationin10MinutesNoPhenomenonInformation", 
+    "MaximumInstantaneousWindSpeed", "MaximumInstantaneousWindSpeedWindDirection", 
+    "WeatherSummaryDay", "WeatherSummaryNight"
+]
+
+
+    data.columns = [translated_columns[original_columns.index(col)] if col in original_columns else col for col in data.columns]
+    return data
 
 def aggregate_csv_files(folder_path, start_year, num_years):
     aggregated_data = []
@@ -52,25 +84,22 @@ def aggregate_csv_files(folder_path, start_year, num_years):
 
         if os.path.exists(file_path):
             data = preprocess_data(file_path)
+            
+            target_cols = [col for col in data.columns if "現象なし情報" in col]
+            for col in target_cols:
+                data[col] = data[col].astype(bool)
+            
+            
+            data = translate_column_names(data)
             aggregated_data.append(data)
         else:
             print(f"File {file_name} does not exist!")
-
+            
     result = pd.concat(aggregated_data, ignore_index=True)
-    target_cols = [col for col in result.columns if "現象なし情報" in col]
-    for col in target_cols:
-        result[col] = result[col].astype(bool)
+    result.to_csv(os.path.join(folder_path, f'Compiled_{start_year}-{start_year+num_years}_eng.csv'), index=False, encoding='utf-8')
+    print(f"Data aggregated and saved as Compiled_{start_year}-{start_year+num_years}_eng.csv")
 
-    new_file = f'Compiled_{start_year}-{start_year+num_years}.csv'
-    result.to_csv(
-        os.path.join(
-            folder_path,
-            new_file
-        ),
-        index=False,
-        encoding='utf-8'
-    )
-    print(f"Data aggregated and saved as {new_file}")
+
 
 
 if __name__ == "__main__":
