@@ -1,4 +1,5 @@
 from statistics import LinearRegression
+import matplotlib as mpl
 import numpy as np
 import pandas as pd
 from pandas import DataFrame, Series
@@ -12,6 +13,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import LabelEncoder
 from scipy import stats
+from scipy.signal import detrend
+from matplotlib.backends.backend_pdf import PdfPages
 
 # 日本語フォント
 mpl.rcParams['font.family'] = 'Meiryo'
@@ -308,10 +311,6 @@ df.to_csv('にゃん.csv', index=False)
 
 # 各カラム毎の可視化と季節性の除去
 
-import pandas as pd
-import matplotlib.pyplot as plt
-from scipy.signal import detrend
-
 # CSVファイルからデータを読み込む
 df = pd.read_csv('にゃん_with_category.csv')
 
@@ -327,31 +326,33 @@ num_columns = len(df.columns)
 graphs_per_page = 4  # 1ページに表示するグラフの数
 num_pages = (num_columns // graphs_per_page) + (num_columns % graphs_per_page > 0)
 
-for page in range(num_pages):
-    start_idx = page * graphs_per_page
-    end_idx = (page + 1) * graphs_per_page
+# PDFファイルの作成
+with PdfPages('output.pdf') as pdf:
+    for page in range(num_pages):
+        start_idx = page * graphs_per_page
+        end_idx = (page + 1) * graphs_per_page
 
-    # サブプロットを作成
-    fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+        # サブプロットを作成
+        fig, axes = plt.subplots(2, 2, figsize=(15, 10))
 
-    for i, column in enumerate(df.columns[start_idx:end_idx]):
-        row = i // 2
-        col = i % 2
-        axes[row, col].plot(df['Date'], df[column], label=f'Original {column}')
-        axes[row, col].plot(df['Date'], detrend_column(df[column]), label=f'Detrended {column}', linestyle='--')
-        axes[row, col].set_title(f'{column} with and without Trend')
-        axes[row, col].set_xlabel('Date')
-        axes[row, col].set_ylabel('Value')
-        axes[row, col].legend()
+        for i, column in enumerate(df.columns[start_idx:end_idx]):
+            row = i // 2
+            col = i % 2
+            axes[row, col].plot(df['Date'], df[column], label=f'Original {column}')
+            axes[row, col].plot(df['Date'], detrend_column(df[column]), label=f'Detrended {column}', linestyle='--')
+            axes[row, col].set_title(f'{column} with and without Trend')
+            axes[row, col].set_xlabel('Date')
+            axes[row, col].set_ylabel('Value')
+            axes[row, col].legend()
 
-    # レイアウト調整
-    plt.tight_layout()
+        # レイアウト調整
+        plt.tight_layout()
 
-    # 画像として保存
-    plt.savefig(f'page_{page + 1}.png')
+        # PDFに保存
+        pdf.savefig()
 
-    # 表示
-    plt.show()
+        # 表示を閉じる
+        plt.close()
 
 
 
